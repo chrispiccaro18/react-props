@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component renders the Header 1`] = `
+<header>
+  <img
+    src="/path/to/image"
+  />
+  <h1>
+    My Prop Dog
+  </h1>
+</header>
+`;
