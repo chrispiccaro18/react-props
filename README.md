@@ -1,203 +1,179 @@
-# React Properties
+# React Events
 
 ## Agenda
 
-* Properties
-* Passing props
-  * Components takes props
-  * Passing props to a component
-* Type checking props
-* Conditional Rendering
-
-## Dependencies
-
-* `npm i -D prop-types`
+* Class Components
+* Event Handlers
+* `bind`
 
 ## Resources
 
-* [Components and Props](https://reactjs.org/docs/components-and-props.html)
-* [Conditional Rendering](https://reactjs.org/docs/conditional-rendering.html)
-* [Typechecking Props](https://reactjs.org/docs/typechecking-with-proptypes.html)
+* [Handling Events](https://reactjs.org/docs/handling-events.html)
 
-## Properties
+## Class Components
 
-In React properties, or props, is our way to pass data to a
-component. Props are passed to a component as an object. These
-props are read-only, which means that we cannot (or should not)
-change their values.
-
-## Passing Props
-
-### Component Definition
-
-Components have a props parameter which allows us to pass data
-into a component.
+In addition to functional components, we can also define
+components as a class. By defining a component as a class
+we have a few added capabilities.
 
 ```js
-import React from 'react';
+import React, { PureComponent } from 'react';
 
-export default function Dog(props) {
-  return (
-    <dl>
-      <dt>Name</dt>
-      <dd>{props.name}</dd>
+export default class Dog extends PureComponent {
+  render() {
+    return (
+      <dl>
+        <dt>Name</dt>
+        <dd>{this.props.name}</dd>
 
-      <dt>Age</dt>
-      <dd>{props.age}</dd>
+        <dt>Age</dt>
+        <dd>{this.props.age}</dd>
 
-      <dt>Weight</dt>
-      <dd>{props.weight}</dd>
-    </dl>
-  )
+        <dt>Weight</dt>
+        <dd>{this.props.weight}</dd>
+      </dl>
+    );
+  }
 }
 ```
 
-Often, to make the component more readable we will destructure
-`props`. This makes it easier for other developers to know
-what props our component takes.
+A class component's properties are accessible with `this.props`.
+
+Class components are often called stateful components, smart components,
+or conatianers. Functional components are often called stateless components,
+dumb components, or presentational components.
+
+### Prop Types
+
+Like functional components it is nice to provide PropTypes to our class
+components
 
 ```js
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-export default function Dog({ name, age, weight }) {
-  return (
-    <dl>
-      <dt>Name</dt>
-      <dd>{name}</dd>
+export default class Dog extends PureComponent {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    age: PropTypes.number.isRequired,
+    weight: PropTypes.string.isRequired
+  }
 
-      <dt>Age</dt>
-      <dd>{age}</dd>
+  render() {
+    return (
+      <dl>
+        <dt>Name</dt>
+        <dd>{this.props.name}</dd>
 
-      <dt>Weight</dt>
-      <dd>{weight}</dd>
-    </dl>
-  )
+        <dt>Age</dt>
+        <dd>{this.props.age}</dd>
+
+        <dt>Weight</dt>
+        <dd>{this.props.weight}</dd>
+      </dl>
+    );
+  }
 }
 ```
 
-### Component Use
+## Event Handlers
 
-We pass data into components by passing props to the component.
-Props are passed using a syntax similar to HTML attribute syntax.
+Often on a webpage we want to be able to respond to events. In vanilla
+JavaScript we can add event handlers to elements:
 
 ```js
-import React from 'react';
-import Dog from './Dog';
+document
+  .getElementById('button')
+  .addEventListener('click', event => {
+    console.log('clicked');
+  });
+```
 
-export default function App() {
-  return (
-    <>
-      <Header />
-      <Dog name="spot" age={5} weight="25 lbs" />
-    </>
-  )
+### Class Component Event Handlers
+
+```js
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+export default class Button extends PureComponent {
+
+  static propTypes = {
+    title: PropTypes.string.isRequired
+  }
+
+  clickHandler = event => {
+    console.log('clicked');
+  }
+
+  render() {
+    return (
+      <button onClick={this.clickHandler}>{this.props.title}</title>
+    );
+  }
 }
 ```
 
-## Type Checking Props
-
-In order to keep readability high, even in complex applications
-and components, its often nice to add prop type checking. This
-makes it easier for developers to know what types they can
-pass as props as well as providing nice error messaging should
-a developer pass in the wrong type.
-
+### Functional Component Event Handlers
 
 ```js
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-function Dog({ name, age, weight }) {
+function Button({ title}) {
+  const clickHandler = event => console.log('clicked');
+
   return (
-    <dl>
-      <dt>Name</dt>
-      <dd>{name}</dd>
-
-      <dt>Age</dt>
-      <dd>{age}</dd>
-
-      <dt>Weight</dt>
-      <dd>{weight}</dd>
-    </dl>
-  )
+    <button onClick={clickHandler}>{title}</title>
+  );
 }
 
-Dog.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number.isRequired,
-  weight: PropTypes.string.isRequired
-}
+Button.propTypes = {
+  title: PropTypes.string.isRequired
+};
 
-export default Dog;
+export default Button;
 ```
 
-## Conditional Rendering
+## `bind`
 
-Sometimes we don't want to render all elements. For example,
-we may not know a dog's weight. If we don't know a dog's we
-can display `unknown`.
+`bind` allows us to partially apply a function.
 
 ```js
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-function Dog({ name, age, weight }) {
+function Button({ title}) {
+  const clickHandler = (text, event) => console.log(text);
+
   return (
-    <dl>
-      <dt>Name</dt>
-      <dd>{name}</dd>
-
-      <dt>Age</dt>
-      <dd>{age}</dd>
-
-      <dt>Weight</dt>
-      <dd>{weight ? weight : 'unknown'}</dd>
-    </dl>
-  )
+    <button onClick={clickHandler.bind(null, 'my text')}>{title}</title>
+  );
 }
 
-Dog.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number.isRequired,
-  weight: PropTypes.string
-}
+Button.propTypes = {
+  title: PropTypes.string.isRequired
+};
 
-export default Dog;
+export default Button;
 ```
 
-Above we user the ternary operator `condition ? if true : else`
-to display `unknown` if `weight` is not defined. Note also that
-the `weight` `PropTypes` is no longer required.
-
-We can also leave off the entire Weight section if weight is not provided
+Is the same as
 
 ```js
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-function Dog({ name, age, weight }) {
+function Button({ title}) {
+  const clickHandler = (text, event) => console.log(text);
+
   return (
-    <dl>
-      <dt>Name</dt>
-      <dd>{name}</dd>
-
-      <dt>Age</dt>
-      <dd>{age}</dd>
-
-      {weight && <dt>Weight</dt>
-      <dd>{weight}</dd>}
-    </dl>
-  )
+    <button onClick={event =>  clickHandler('my text', event)}>{title}</title>
+  );
 }
 
-Dog.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number.isRequired,
-  weight: PropTypes.string.isRequired
-}
+Button.propTypes = {
+  title: PropTypes.string.isRequired
+};
 
-export default Dog;
+export default Button;
 ```
-
-Above we use `&&` to conditionally display the weight section
-only if weight is defined.
