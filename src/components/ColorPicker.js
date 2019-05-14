@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../index.css';
 
 export default class Button extends PureComponent {
   static propTypes = {
@@ -12,7 +13,7 @@ export default class Button extends PureComponent {
 
   render() {
     return (
-      <button onClick={this.clickHandler}>{this.props.title}</button>
+      <button onClick={this.clickHandler} className={styles[this.props.title]}>{this.props.title}</button>
     );
   }
 }
