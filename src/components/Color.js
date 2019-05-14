@@ -6,7 +6,7 @@ function Color({ name, rgb }) {
   
   const colorPreview = {
     backgroundColor: hex,
-    display: 'inline-Block',
+    display: 'inline-block',
     width: '0.8em',
     height: '0.8em'
   };
