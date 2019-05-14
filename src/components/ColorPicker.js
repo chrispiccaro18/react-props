@@ -4,16 +4,22 @@ import styles from '../index.css';
 
 export default class Button extends PureComponent {
   static propTypes = {
-    title: PropTypes.string.isRequired
+    colors: PropTypes.array.isRequired
   }
 
-  clickHandler = () => {
-    console.log(this.props.title);
+  clickHandler = (event) => {
+    console.log(event.target.textContent);
   }
 
   render() {
+    const listItems = this.props.colors.map(color => {
+      return <button key={color} onClick={this.clickHandler} className={styles[color]}>{color}</button>;
+    });
+
     return (
-      <button onClick={this.clickHandler} className={styles[this.props.title]}>{this.props.title}</button>
+      <>
+        { listItems }
+      </>
     );
   }
 }

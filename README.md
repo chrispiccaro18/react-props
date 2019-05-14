@@ -142,7 +142,7 @@ export default Button;
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Button({ title}) {
+function Button({ title }) {
   const clickHandler = (text, event) => console.log(text);
 
   return (
@@ -163,11 +163,11 @@ Is the same as
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Button({ title}) {
+function Button({ title }) {
   const clickHandler = (text, event) => console.log(text);
 
   return (
-    <button onClick={event =>  clickHandler('my text', event)}>{title}</title>
+    <button onClick={event =>  clickHandler(title, event)}>{title}</title>
   );
 }
 

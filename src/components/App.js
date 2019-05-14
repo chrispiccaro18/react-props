@@ -1,12 +1,12 @@
 import React from 'react';
 import ColorPicker from './ColorPicker';
 
+const colors = ['red', 'yellow', 'blue'];
+
 export default function App() {
   return (
     <>
-      <ColorPicker title='red'/>
-      <ColorPicker title='yellow'/>
-      <ColorPicker title='blue'/>
+      <ColorPicker colors={colors}/>
     </>
   );
 }
